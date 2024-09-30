@@ -1,5 +1,5 @@
-#include <greeter/greeter.h>
-#include <greeter/version.h>
+#include <stellar/stellar.h>
+#include <stellar/version.h>
 
 #include <cxxopts.hpp>
 #include <iostream>
@@ -7,11 +7,11 @@
 #include <unordered_map>
 
 auto main(int argc, char** argv) -> int {
-  const std::unordered_map<std::string, greeter::LanguageCode> languages{
-      {"en", greeter::LanguageCode::EN},
-      {"de", greeter::LanguageCode::DE},
-      {"es", greeter::LanguageCode::ES},
-      {"fr", greeter::LanguageCode::FR},
+  const std::unordered_map<std::string, stellar::LanguageCode> languages{
+      {"en", stellar::LanguageCode::EN},
+      {"de", stellar::LanguageCode::DE},
+      {"es", stellar::LanguageCode::ES},
+      {"fr", stellar::LanguageCode::FR},
   };
 
   cxxopts::Options options(*argv, "A program to welcome the world!");
@@ -36,7 +36,7 @@ auto main(int argc, char** argv) -> int {
   }
 
   if (result["version"].as<bool>()) {
-    std::cout << "Greeter, version " << GREETER_VERSION << std::endl;
+    std::cout << "Stellar, version " << STELLAR_VERSION << std::endl;
     return 0;
   }
 
@@ -46,8 +46,8 @@ auto main(int argc, char** argv) -> int {
     return 1;
   }
 
-  greeter::Greeter greeter(name);
-  std::cout << greeter.greet(langIt->second) << std::endl;
+  stellar::Stellar stellar(name);
+  std::cout << stellar.greet(langIt->second) << std::endl;
 
   return 0;
 }
