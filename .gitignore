@@ -7,3 +7,4 @@ CMakeCache.txt
 .cache
 logs
 .venv
+input

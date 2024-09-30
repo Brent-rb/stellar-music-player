@@ -28,8 +28,8 @@ done
 
 if [ "$opt_build" = true ]; then
     echo "Building..."
-    cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S all -B build &> logs/build.txt
-    cmake --build build &>> logs/build.txt
+    cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -S all -B build 
+    cmake --build build 
     echo "Building complete"
 fi
 
