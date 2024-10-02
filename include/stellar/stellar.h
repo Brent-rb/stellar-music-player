@@ -1,32 +1,35 @@
 #pragma once
 
+#include <miniaudio.h>
+
 #include <string>
 
 namespace stellar {
-
-    /**  Language codes to be used with the Stellar class */
-    enum class LanguageCode { EN, DE, ES, FR };
-
     /**
-     * @brief A class for saying hello in multiple languages
+     * @brief The root of the project
      */
     class Stellar {
-        std::string name;
+      private:
+        ma_engine _engine;
+        ma_sound _sound;
+        ma_sound_group _group;
+        ma_result _last_result;
+
+        float _sound_fps;
+        float _sound_length_seconds;
+        ma_uint64 _sound_length_frames;
 
       public:
-        /**
-         * @brief Creates a new greeter
-         * @param name the name to greet
-         */
-        Stellar(std::string name);
+        Stellar();
+        ~Stellar();
 
-        /**
-         * @brief Creates a localized string containing the greeting
-         * @param lang the language to greet in
-         * @return a string containing the greeting
-         */
-        std::string greet(LanguageCode lang = LanguageCode::EN) const;
-        int test() const;
+        bool init();
+        bool playSong(std::string const& file_path);
+        bool stop();
+        bool start();
+        bool seek(int seconds);
+        float getCursorSeconds();
+        float getDurationSeconds();
     };
 
 }  // namespace stellar
