@@ -40,10 +40,23 @@ CPMAddPackage(
   DOWNLOAD_ONLY YES
 )
 
+CPMAddPackage(
+  name uWebSockets
+  GIT_TAG v20.67.0
+  GITHUB_REPOSITORY uNetworking/uWebSockets
+)
+
 if(miniaudio_ADDED)
   # Define the header-only miniaudio target
   add_library(miniaudio INTERFACE IMPORTED GLOBAL)
   target_include_directories(miniaudio SYSTEM INTERFACE ${miniaudio_SOURCE_DIR})
+endif()
+
+if (uWebSockets_ADDED)
+  # uWebSockets has no CMake support, so we create our own target
+
+  add_library(uWebSockets INTERFACE IMPORTED GLOBAL)
+  target_include_directories(uWebSockets SYSTEM INTERFACE ${uWebSockets_SOURCE_DIR})
 endif()
 
 
@@ -65,11 +78,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 
 # Link dependencies
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt miniaudio)
+target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt miniaudio uWebSockets)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                         $<BUILD_INTERFACE:${miniaudio_SOURCE_DIR}>
                          $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
+                         $<INSTALL_INTERFACE:include/${miniaudio_SOURCE_DIR}-0.11.21>
 )
 
 add_compile_options(-lpthread)
@@ -90,5 +105,5 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMajorVersion
-  DEPENDENCIES "fmt 9.1.0;miniaudio 0.11.21"
+  DEPENDENCIES "fmt 9.1.0;miniaudio 0.11.21;uWS v20.67.0"
 )
